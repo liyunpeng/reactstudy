@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>算法总结</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=10">
+</head>
+
+<body>
+<div>算法总结</div>
+<script>
+    //阶乘
+    function factorial(num) {
+        if (num < 0) {
+            return -1;
+        } else if (num == 0 || num == 1) {
+            return 1
+        } else {
+            return num * factorial(num - 1);
+        }
+    }
+
+    console.log(factorial(5));
+
+    //正念反念都一样
+    function palindrome(text) {
+        var retText = text.replace(/[^a-zA-z0-9]/g, "").toLowerCase().split("");
+        return retText.join() == retText.reverse().join() ? true : false;
+    }
+
+    console.log(palindrome("never odd or even"));
+
+    //找出最长的单词
+    function findLongWord(str) {
+        var new_str = str.split(" ");
+        var new_arr = [];
+        for (var i = 0; i < new_str.length; i++) {
+            new_arr.push(new_str[i].length);
+        }
+        return new_arr.sort(function (a, b) {
+            return b - a
+        })[0]
+    }
+
+    console.log(findLongWord("The quick brown fox jumped over the lazy dog"));
+
+    //选择排序算法（找到数组最大值，和索引。最大值添加到新数组的第一位，删除老数组最大的索引位）
+    function sortawait(arr) {
+        var str_arr = [...arr];
+        var new_arr = [];
+        for (var i = 0; i < str_arr.length; i++) {
+            var max = Math.max.apply(null, arr);
+            var index = arr.indexOf(max);
+            new_arr.push(max)
+            arr.splice(index, 1);
+        }
+        return new_arr;
+    }
+
+    console.log(sortawait([10, 3, 8, 4, 6, 5]));
+
+    //冒泡排序算法（两两对比，前面和后面相互比较，大的数往后移动）；
+    function bubbleSort(arr) {
+        var len = arr.length;
+        for (var i = 0; i < len; i++) {
+            for (var j = 0; j < len - 1 - i; j++) {  //每次循环一次，最后一位定时最大的，也就没有必要在拿出来比较
+                if (arr[j] > arr[j + 1]) {
+                    var fontValue = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = fontValue;
+                }
+            }
+        }
+    }
+
+    console.log(sortawait([10, 3, 8, 4, 6, 5]));
+
+    //英文首字母大写
+    function titleCase(title) {
+        var arr_title = title.toLowerCase().split(" ");
+        for (var i = 0; i < arr_title.length; i++) {
+            arr_title[i] = arr_title[i].replace(arr_title[i].charAt(0), arr_title[i].charAt(0).toUpperCase())
+        }
+        return arr_title.join(" ");
+    }
+
+    console.log(titleCase("I'm a little tea pot"));
+
+    //二维数组返回最大的数
+    function largestOfFour(muitArr) {
+        var new_arr = [];
+        for (var i = 0; i < muitArr.length; i++) {
+            muitArr[i].sort(function (a, b) {
+                return b - a
+            });
+            new_arr.push(muitArr[i][0]);
+        }
+        return new_arr;
+    }
+
+    console.log(largestOfFour([[4, 5, 1, 3], [13, 27, 18, 26], [32, 35, 37, 39], [1000, 1001, 857, 1]]));
+
+    //模拟repeat添加重复字符
+    function repeat(str, timer) {
+        var new_str = str || "";
+        var timer = timer || 0;
+        for (var i = 0; i < timer - 1; i++) {
+            new_str += str;
+        }
+        return new_str;
+    }
+
+    console.log(repeat("abc", 3));
+
+    //截取字符串，多余的省略号(这里还是有缺陷的，2个数字或英文字符位==1个中文字符位=>导致长度不一)
+    function interceptChart(value, number) {
+        var interValue = value.substring(0, number);
+        if (value.length > number) {
+            interValue = interValue + "...";
+        }
+        return interValue;
+    }
+
+    console.log(interceptChart("天才是1%的灵感,加上99%的汗水,但那1%的灵感才是最重要的", 5));
+
+    //按指定大小切割数组
+    function chunk(arr, len) {
+        var new_arr = [];
+        var index = 0;
+        for (var i = 0; i < arr.length; i++) {
+            if (i != 0 && i % len == 0) {
+                new_arr.push(arr.slice(index, i));
+                index = i;
+            }
+        }
+        new_arr.push(arr.slice(index, arr.length));
+        return new_arr;
+    }
+
+    console.log(chunk(["a", "b", "c", "d", "e", "f", "g", "h"], 3));
+
+    //数组去重
+    function removeArray(arr) {
+        var new_arr = [];
+        for (var i = 0; i < arr.length; i++) {
+            if (new_arr.indexOf(arr[i]) == -1) {
+                new_arr.push(arr[i]);
+            }
+        }
+        return new_arr;
+    }
+
+    console.log(removeArray(["他", "它", "他", "她", "he", "它", "her", 'he', "he"]));
+
+    //ES6去重
+    function eSixRemoveArray(arr) {
+        var set_arr = new Set(arr); //实例化后的数组转化成set类型并成功去重
+        return Array.from(set_arr); //数据set类型转化成数组类型
+    }
+
+    console.log(eSixRemoveArray(["他", "它", "他", "她", "he", "它", "her", 'he', "he"]));
+
+    //模拟迭代器（封装遍历，对象/数组/map/set都可以通过它来遍历）
+    function dieEach(array, callback) {
+        if (Object.prototype.toString.call(array) === '[object Array]') {
+            for (var i = 0; i < array.length; i++) {
+                callback(array[i], i)
+            }
+        } else if (Object.prototype.toString.call(array) === '[object Map]') {
+            for (var key of array.keys()) {
+                callback(array.get(key), key)
+            }
+        } else if (Object.prototype.toString.call(array) === '[object Set]') {
+            var setArr = Array.from(array);
+            for (var i = 0; i < setArr.length; i++) {
+                callback(setArr[i], i)
+            }
+        } else {
+            for (var key in array) {
+                callback(array[key], key)
+            }
+        }
+
+    }
+
+    //      dieEach([3,4,5,6],function(item,i){
+    //          console.log(item);
+    //      })
+    //      dieEach({"name":"zhuyang","age":14,"sex":"男"},function(item,i){
+    //          console.log(item);
+    //      })
+    //      var dieMap = new Map();
+    //      dieMap.set("a",1);
+    //      dieMap.set("b",2);
+    //      dieEach(dieMap,function(item,i){
+    //          console.log(item);
+    //      })
+    var dieSet = new Set([1, 2, 3, 4, 5, 6]);
+    dieEach(dieSet, function (item, i) {
+        console.log(item);
+    })
+    //实现slice截取功能
+    Array.prototype.dieSlice = function () {
+        var start = arguments[0] || 0;
+        var end = arguments[1] || this.length;
+        var newArray = [];
+        for (var i = start; i < end; i++) {
+            newArray.push(this[i])
+        }
+        return newArray;
+    }
+    console.log([1, 2, 3, 4, 5, 6, 7, 8, 9].dieSlice(4, 6));
+</script>
+</body>
+</html>
